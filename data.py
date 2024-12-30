@@ -3,6 +3,12 @@ from datetime import datetime
 from tkinter import *
 from tkinter import messagebox
 from Main import main_screen
+from Main import signup_page
+
+
+
+
+
 
 # after authentication write the data to sqlite file
 def write_data(uname,s_email,s_password):
@@ -29,7 +35,7 @@ def write_data(uname,s_email,s_password):
     result = cursor.fetchone()
 
     if result:
-        messagebox.showwarning(title="Signup Error", message="User already exists!  Try logging in.")
+        messagebox.showwarning(title="Signup Error", message="User already exists!  logging you in.")
     else:
         cursor.execute('''
         INSERT INTO Login_details (datetime, name, email, password)

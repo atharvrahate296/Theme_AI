@@ -69,7 +69,7 @@ def send_otp_to_mail(sender, password, recipient, otp):
 def enter_otp_screen(s_email, sname, pass2):
     if generate_otp(s_email):
         # OTP validation page
-        w5 = Tk()
+        w5 = Toplevel()
         w5.title("Theme AI\u2122")
         w5.geometry("650x600+450+100")
         w5.iconbitmap("assets/bot.ico")
@@ -107,8 +107,8 @@ def enter_otp_screen(s_email, sname, pass2):
                 s.place(relx=0.5, rely=0.8, anchor=CENTER)
 
                 # Call function to write the user data to database
+                w5.after(5000, w5.destroy)
                 d.write_data(sname, s_email, pass2)
-                w5.after(2000, w5.destroy)
                 
             else:
                 messagebox.showerror(title="Error", message="Incorrect OTP", parent=w5)

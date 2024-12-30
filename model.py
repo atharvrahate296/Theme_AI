@@ -3,6 +3,7 @@ from tkinter import ttk
 from tkinter import messagebox
 import google.generativeai as genai
 from dotenv import load_dotenv
+import sys
 import os
 
 def chat_screen(event=None):
@@ -79,7 +80,7 @@ def chat_screen(event=None):
 
         query = prompt.get('1.0', 'end').strip()
         if query.lower() in ["end", "exit", "stop"]:
-            w5.destroy()
+            exit_app()
             return
         elif query.lower() in ["clear"]:
             chat_history.config(state=NORMAL)
@@ -95,13 +96,23 @@ def chat_screen(event=None):
 
         # api = API_KEY  # Replace with your actual API key
         genai.configure(api_key=api)
+        
+        # Store and consider chat history
+        chat_history_content = chat_history.get("1.0", "end-1c")  # Get existing chat history
+
+        # Update the system prompt to include chat history
+        system_instruction = f"You are a {role} chatbot. Answer questions related to {role} and nothing outside of it. Here is the conversation history:\n{chat_history_content}\n"
+
+        # Create the model with the updated system prompt
         model = genai.GenerativeModel(
             model_name="gemini-1.5-flash",
-            system_instruction=f"You are a {role} chatbot. Answer questions related to {role} and nothing outside of it."
+            system_instruction=system_instruction
         )
 
+        # Generate the response using the query
         response = model.generate_content(query)
 
+        # Insert the query and response into the chat history
         chat_history.config(state=NORMAL, font=("Georgia", 14))
         chat_history.insert(END, "You : " + query + "\n")
         chat_history.insert(END, "\n")  # Adds padding after the message
@@ -109,6 +120,7 @@ def chat_screen(event=None):
         chat_history.config(state=DISABLED)
         chat_history.yview(END)
 
+        # Clear the input prompt
         prompt.delete('1.0', END)
 
     prompt.bind("<Return>", query_n_response)
@@ -127,8 +139,9 @@ def chat_screen(event=None):
     enter_button.bind("<Leave>", exit_button_hover)
 
     # Exit button functionality
-    def exit_app():
-        w5.destroy()
+    def exit_app(event=None):
+        w5.after(500,w5.destroy())
+        exit_screen()
 
     exit_button = Button(w5, width=4, text="X", font=('Georgia', 12, 'bold'), fg="black", bg="gray", command=exit_app)
     exit_button.place(relx=0.998, rely=0.02, anchor=E)
@@ -149,6 +162,38 @@ def chat_screen(event=None):
     footer.place(relx=0.5,rely=0.985,anchor=CENTER) 
 
     w5.mainloop()
+def exit_screen(event=None):
+    root= Toplevel()
 
-if __name__ == '__main__':
-    chat_screen()
+    root.title("Theme AI\u2122")
+    root.geometry("1100x680+180+80")
+    root.iconbitmap("assets/bot.ico")
+    root.config(bg="#414244")
+    root.attributes('-fullscreen', True)
+
+    msg = '''
+                    Thank you for using Theme AI.
+    Please Keep learning and explore more use cases for the app.
+
+    Thank you,
+
+    Team, Theme AI
+    :)
+    '''
+    greet = StringVar()
+    greet.set(msg)
+    def exit(event=None):
+        root.destroy()
+        sys.exit()
+    message = Label(root,textvariable = greet , font =("Montserrat",20,'bold'),fg="white",bg="#414244")
+    message.place(relx=0.5,rely=0.5,anchor=CENTER)
+
+    footer = Label(root, text="\u00a9 2024 All rights reserved", font=("Georgia", 12), bg="#414244", fg="white", pady=5)
+    footer.pack(side=BOTTOM)
+    root.bind("<KeyPress>",exit)
+
+    root.mainloop()
+
+
+# if __name__ == '__main__':
+#     chat_screen()
