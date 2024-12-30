@@ -194,6 +194,5 @@ def exit_screen(event=None):
 
     root.mainloop()
 
-
 # if __name__ == '__main__':
 #     chat_screen()

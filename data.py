@@ -5,11 +5,6 @@ from tkinter import messagebox
 from Main import main_screen
 from Main import signup_page
 
-
-
-
-
-
 # after authentication write the data to sqlite file
 def write_data(uname,s_email,s_password):
     # write signup data to file
@@ -66,7 +61,4 @@ def confirm_account(l_email,l_password):
             return 2
     else:
         return False
-    
 
-# Ensure the main_screen() function is correctly defined and imported from the Main module.
-# This function is used to display the main application screen after successful login.

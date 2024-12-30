@@ -215,8 +215,6 @@ def signup_page(event=None):
     name.pack(padx=20,pady=8)
     name.place(relx=0.15,rely=0.37)
 
-
-
     l3=Label(frame,text="New Password*",font=("Montserrat",18,"bold"),bg="#5B8DC0")
     l3.pack(padx=20,pady=20)
     l3.place(relx=0.1,rely=0.49)
@@ -270,7 +268,6 @@ def signup_page(event=None):
             # All validations passed, proceed to the next step
             return True
         return False
-            
     
     def entering_otp_validation(event=None):
         # Fetch values from the form fields inside the function
@@ -300,7 +297,6 @@ def signup_page(event=None):
 
     # mainloop
     w3.mainloop()
-
 
 def main_screen(name=None,event=None):
     # main window
